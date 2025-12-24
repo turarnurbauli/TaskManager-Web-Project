@@ -6,9 +6,10 @@ TaskManager is a simple and intuitive web application designed to help users org
 
 ## Team Members
 
-- **Nurbauli Turar** - Group SE2425
+- **Turar Nurbauli** - Group SE2425
 - **Alkhan Almas** - Group SE2425
 
+*Please update this section with your actual team member names and group numbers before submission.*
 
 ## Topic Explanation
 
@@ -45,6 +46,12 @@ The application will evolve from a simple static landing page to a full-featured
    http://localhost:3000
    ```
 
+7. Test the routes:
+   - Home: http://localhost:3000/
+   - About: http://localhost:3000/about
+   - Contact: http://localhost:3000/contact
+   - Test 404: http://localhost:3000/unknown-page
+
 ## Project Structure
 
 ```
@@ -52,44 +59,71 @@ project-root/
 ├── public/
 │   └── style.css          # CSS styling for the application
 ├── views/
-│   └── index.html         # Landing page
+│   ├── index.html         # Landing page (Home)
+│   ├── about.html         # About page
+│   ├── contact.html       # Contact form page
+│   └── 404.html           # 404 error page
 ├── server.js              # Main Express server file
 ├── package.json           # Node.js dependencies and project metadata
+├── messages.json          # JSON file storing contact form submissions (auto-created)
 └── README.md              # Project documentation
 ```
 
 ## Development Roadmap
 
-### d 1 - Project Setup & Landing Page ✅
+### Week 1 - Project Setup & Landing Page ✅
 - Express.js server setup
 - Basic project structure
 - Landing page with project information
 - Basic CSS styling
 
-### d 2 - Forms & POST Routes
-- Create task form
-- Implement POST route for task creation
-- Form validation
-- Task display on the page
+### Week 2-3 - Routing and Forms ✅
+- Implement GET routes: /, /about, /contact
+- Create contact form with name, email, and message fields
+- Implement POST route for form submission
+- Add client-side form validation
+- Save form submissions to JSON file (bonus feature)
+- Create 404 error page
+- Consistent navigation across all pages
 
-### d 3 - Database Integration
+### Week 3 - Database Integration
 - Set up database (MongoDB or PostgreSQL)
 - Connect application to database
 - Store and retrieve tasks from database
 - Implement data persistence
 
-### d 4 - CRUD Operations
+### Week 4 - CRUD Operations
 - Complete Create, Read, Update, Delete operations for tasks
 - Enhanced user interface
 - Task editing functionality
 - Task deletion with confirmation
 
-### d 5 - Advanced Features & Polish
+### Week 5 - Advanced Features & Polish
 - Task filtering and search
 - Priority and category management
 - User authentication (optional)
 - Final UI/UX improvements
 - Testing and bug fixes
+
+## Routes
+
+The application includes the following routes:
+
+- **GET /** - Home page (landing page with project overview)
+- **GET /about** - About page (team information and project details)
+- **GET /contact** - Contact page (displays contact form)
+- **POST /contact** - Handles form submissions from the contact page
+- **404** - Error page for unknown routes
+
+## Form Features
+
+The contact form includes:
+- **Name field** - Required, minimum 2 characters
+- **Email field** - Required, email format validation
+- **Message field** - Required, minimum 10 characters, maximum 1000 characters
+- **Client-side validation** - Real-time validation before form submission
+- **Server-side processing** - Form data is logged and saved to `messages.json`
+- **Success response** - User-friendly confirmation page after submission
 
 ## Technologies Used
 
@@ -97,6 +131,16 @@ project-root/
 - **Express.js** - Web application framework
 - **HTML5** - Markup language for structure
 - **CSS3** - Styling and layout
+- **JavaScript** - Client-side form validation
+- **File System (fs)** - For saving form data to JSON file
+
+## Bonus Features Implemented
+
+✅ **Client-side form validation** - Real-time validation with error messages
+✅ **JSON file storage** - Form submissions are saved to `messages.json` file
+✅ **Character counter** - Shows character count for message field
+✅ **Error styling** - Visual feedback for invalid form fields
+✅ **Responsive design** - Works on mobile and desktop devices
 
 ## Future Enhancements
 
@@ -107,5 +151,11 @@ project-root/
 - Dark mode theme
 - Task statistics and analytics
 - Export/import functionality
+- Email notifications for form submissions
+- Database integration for storing form data
+
+## License
+
+This project is created for educational purposes as part of the Web Development course.
 
 

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - TaskManager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>TaskManager</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contact-section">
+            <h1>Contact Us</h1>
+            <p class="contact-intro">
+                Have a question, suggestion, or feedback? We'd love to hear from you! 
+                Fill out the form below and we'll get back to you as soon as possible.
+            </p>
+
+            <form id="contactForm" class="contact-form" action="/contact" method="POST">
+                <div class="form-group">
+                    <label for="name">Name <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required 
+                        placeholder="Enter your full name"
+                        minlength="2"
+                        maxlength="100"
+                    >
+                    <span class="error-message" id="nameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="Enter your email address"
+                    >
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message <span class="required">*</span></label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        required 
+                        rows="6" 
+                        placeholder="Enter your message here..."
+                        minlength="10"
+                        maxlength="1000"
+                    ></textarea>
+                    <span class="error-message" id="messageError"></span>
+                    <small class="char-count">Characters: <span id="charCount">0</span>/1000</small>
+                </div>
+
+                <button type="submit" class="btn-submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TaskManager. Built with Node.js and Express.js</p>
+    </footer>
+
+    <script>
+        // БОНУС: Клиентская валидация формы
+        const form = document.getElementById('contactForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const messageInput = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+
+        // Подсчет символов в текстовом поле
+        messageInput.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+
+        // Валидация формы перед отправкой
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Валидация имени
+            const nameError = document.getElementById('nameError');
+            if (nameInput.value.trim().length < 2) {
+                nameError.textContent = 'Name must be at least 2 characters long';
+                nameInput.classList.add('error');
+                isValid = false;
+            } else {
+                nameError.textContent = '';
+                nameInput.classList.remove('error');
+            }
+
+            // Валидация email
+            const emailError = document.getElementById('emailError');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailInput.value)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('error');
+                isValid = false;
+            } else {
+                emailError.textContent = '';
+                emailInput.classList.remove('error');
+            }
+
+            // Валидация сообщения
+            const messageError = document.getElementById('messageError');
+            if (messageInput.value.trim().length < 10) {
+                messageError.textContent = 'Message must be at least 10 characters long';
+                messageInput.classList.add('error');
+                isValid = false;
+            } else {
+                messageError.textContent = '';
+                messageInput.classList.remove('error');
+            }
+
+            // Если форма не валидна, предотвращаем отправку
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        // Убираем ошибки при вводе
+        nameInput.addEventListener('input', function() {
+            if (this.value.trim().length >= 2) {
+                document.getElementById('nameError').textContent = '';
+                this.classList.remove('error');
+            }
+        });
+
+        emailInput.addEventListener('input', function() {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailPattern.test(this.value)) {
+                document.getElementById('emailError').textContent = '';
+                this.classList.remove('error');
+            }
+        });
+
+        messageInput.addEventListener('input', function() {
+            if (this.value.trim().length >= 10) {
+                document.getElementById('messageError').textContent = '';
+                this.classList.remove('error');
+            }
+        });
+    </script>
+</body>
+</html>
+
