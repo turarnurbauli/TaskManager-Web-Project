@@ -10,6 +10,15 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 // ============================================
+// CUSTOM LOGGER MIDDLEWARE
+// ============================================
+// Логирует HTTP метод и URL каждого запроса
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next(); // Передает управление следующему middleware/маршруту
+});
+
+// ============================================
 // МАРШРУТЫ (ROUTES)
 // ============================================
 
@@ -30,11 +39,47 @@ app.get('/contact', (req, res) => {
 
 // Страница "Контакты" - POST (обработать форму)
 app.post('/contact', (req, res) => {
-  // Выводим данные формы в консоль для отладки
-  console.log('Form data received:', req.body);
-  
   // Получаем данные из формы
   const { name, email, message } = req.body;
+  
+  // ВАЛИДАЦИЯ: Проверяем наличие обязательных полей
+  if (!name || !email || !message) {
+    return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Error - TaskManager</title>
+        <link rel="stylesheet" href="/style.css">
+      </head>
+      <body>
+        <header>
+          <nav>
+            <div class="logo">
+              <h1>TaskManager</h1>
+            </div>
+            <ul class="nav-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main>
+          <div class="error-message">
+            <h2>Error 400: Bad Request</h2>
+            <p>Please fill in all required fields (name, email, message).</p>
+            <a href="/contact" class="btn-primary">Back to Contact Form</a>
+          </div>
+        </main>
+      </body>
+      </html>
+    `);
+  }
+  
+  // Выводим данные формы в консоль для отладки
+  console.log('Form data received:', req.body);
   
   // Создаем объект с данными сообщения
   const contactData = {
@@ -44,7 +89,7 @@ app.post('/contact', (req, res) => {
     timestamp: new Date().toISOString()
   };
   
-  // БОНУС: Сохранение данных в JSON файл
+  // Сохранение данных в JSON файл
   const dataFilePath = path.join(__dirname, 'messages.json');
   
   // Читаем существующие сообщения (если файл существует)
@@ -103,6 +148,141 @@ app.post('/contact', (req, res) => {
     </body>
     </html>
   `);
+});
+
+// ============================================
+// НОВЫЕ МАРШРУТЫ ДЛЯ ASSIGNMENT 2 PART 1
+// ============================================
+
+// Маршрут /search с query параметром q
+app.get('/search', (req, res) => {
+  const query = req.query.q; // Получаем query параметр q
+  
+  // ВАЛИДАЦИЯ: Если параметр q отсутствует, возвращаем 400
+  if (!query || query.trim() === '') {
+    return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Error - TaskManager</title>
+        <link rel="stylesheet" href="/style.css">
+      </head>
+      <body>
+        <header>
+          <nav>
+            <div class="logo">
+              <h1>TaskManager</h1>
+            </div>
+            <ul class="nav-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main>
+          <div class="error-message">
+            <h2>Error 400: Bad Request</h2>
+            <p>Missing required query parameter 'q'.</p>
+            <p>Usage: <code>/search?q=your_search_term</code></p>
+            <a href="/" class="btn-primary">Return to Home</a>
+          </div>
+        </main>
+      </body>
+      </html>
+    `);
+  }
+  
+  // Если параметр есть, отправляем страницу с результатами поиска
+  res.sendFile(__dirname + '/views/search.html');
+});
+
+// Маршрут /item/:id с route параметром id
+app.get('/item/:id', (req, res) => {
+  const itemId = req.params.id; // Получаем route параметр id
+  
+  // ВАЛИДАЦИЯ: Если параметр id отсутствует, возвращаем 400
+  if (!itemId || itemId.trim() === '') {
+    return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Error - TaskManager</title>
+        <link rel="stylesheet" href="/style.css">
+      </head>
+      <body>
+        <header>
+          <nav>
+            <div class="logo">
+              <h1>TaskManager</h1>
+            </div>
+            <ul class="nav-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+        </header>
+        <main>
+          <div class="error-message">
+            <h2>Error 400: Bad Request</h2>
+            <p>Missing required route parameter 'id'.</p>
+            <p>Usage: <code>/item/:id</code></p>
+            <a href="/" class="btn-primary">Return to Home</a>
+          </div>
+        </main>
+      </body>
+      </html>
+    `);
+  }
+  
+  // Если параметр есть, отправляем страницу с информацией об элементе
+  res.sendFile(__dirname + '/views/item.html');
+});
+
+// API endpoint /api/info - возвращает JSON
+app.get('/api/info', (req, res) => {
+  // Возвращаем информацию о проекте в формате JSON
+  res.json({
+    project: {
+      name: 'TaskManager',
+      version: '2.0.0',
+      description: 'A simple and intuitive web application for task management',
+      team: [
+        {
+          name: 'Turar Nurbauli',
+          group: 'SE2425',
+          role: 'Developer & Project Manager'
+        },
+        {
+          name: 'Alkhan Almas',
+          group: 'SE2425',
+          role: 'Developer & UI/UX Designer'
+        }
+      ],
+      technologies: [
+        'Node.js',
+        'Express.js',
+        'HTML5',
+        'CSS3',
+        'JavaScript'
+      ],
+      routes: [
+        { method: 'GET', path: '/', description: 'Home page' },
+        { method: 'GET', path: '/about', description: 'About page' },
+        { method: 'GET', path: '/contact', description: 'Contact form page' },
+        { method: 'POST', path: '/contact', description: 'Submit contact form' },
+        { method: 'GET', path: '/search?q=...', description: 'Search with query parameter' },
+        { method: 'GET', path: '/item/:id', description: 'Item details by ID' },
+        { method: 'GET', path: '/api/info', description: 'Project information (JSON)' }
+      ],
+      timestamp: new Date().toISOString()
+    }
+  });
 });
 
 // 404 страница (для всех неизвестных маршрутов)

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - TaskManager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>TaskManager</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <h1>Search Results</h1>
+            <p class="search-info">
+                This is a placeholder for search functionality. In a real application, 
+                this page would display search results based on the query parameter.
+            </p>
+            
+            <div class="search-example">
+                <h2>How to use search:</h2>
+                <p>Add a query parameter <code>q</code> to the URL:</p>
+                <code class="code-block">/search?q=your_search_term</code>
+                
+                <h3>Example:</h3>
+                <ul class="example-list">
+                    <li><a href="/search?q=task">/search?q=task</a></li>
+                    <li><a href="/search?q=project">/search?q=project</a></li>
+                    <li><a href="/search?q=assignment">/search?q=assignment</a></li>
+                </ul>
+                
+                <div class="note-box">
+                    <p><strong>Note:</strong> This route demonstrates query parameters in Express.js. 
+                    The query parameter <code>q</code> is accessible via <code>req.query.q</code>.</p>
+                </div>
+            </div>
+            
+            <div class="route-info">
+                <h3>Technical Details:</h3>
+                <ul>
+                    <li><strong>Route:</strong> GET /search</li>
+                    <li><strong>Query Parameter:</strong> q (required)</li>
+                    <li><strong>Validation:</strong> Returns 400 if 'q' is missing</li>
+                    <li><strong>Access:</strong> <code>req.query.q</code> in server.js</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TaskManager. Built with Node.js and Express.js</p>
+    </footer>
+
+    <script>
+        // Получаем query параметр из URL и отображаем его
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        
+        if (query) {
+            const searchInfo = document.querySelector('.search-info');
+            searchInfo.innerHTML = `
+                <strong>You searched for:</strong> "<em>${query}</em>"
+                <br><br>
+                This is a placeholder for search functionality. In a real application, 
+                this page would display search results based on your query.
+            `;
+        }
+    </script>
+</body>
+</html>
+

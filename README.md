@@ -50,7 +50,12 @@ The application will evolve from a simple static landing page to a full-featured
    - Home: http://localhost:3000/
    - About: http://localhost:3000/about
    - Contact: http://localhost:3000/contact
+   - Search: http://localhost:3000/search?q=task
+   - Item: http://localhost:3000/item/123
+   - API Info: http://localhost:3000/api/info
    - Test 404: http://localhost:3000/unknown-page
+   
+   **Note:** Check the server console to see the logger middleware in action - it logs every request!
 
 ## Project Structure
 
@@ -62,6 +67,8 @@ project-root/
 │   ├── index.html         # Landing page (Home)
 │   ├── about.html         # About page
 │   ├── contact.html       # Contact form page
+│   ├── search.html        # Search results page
+│   ├── item.html          # Item details page
 │   └── 404.html           # 404 error page
 ├── server.js              # Main Express server file
 ├── package.json           # Node.js dependencies and project metadata
@@ -86,6 +93,14 @@ project-root/
 - Create 404 error page
 - Consistent navigation across all pages
 
+### Week 3-4 - Server-side Request Handling ✅
+- Custom logger middleware (logs HTTP method + URL)
+- Query parameters: /search?q=...
+- Route parameters: /item/:id
+- JSON API endpoint: /api/info
+- Server-side validation (returns 400 for missing parameters)
+- Enhanced error handling
+
 ### Week 3 - Database Integration
 - Set up database (MongoDB or PostgreSQL)
 - Connect application to database
@@ -107,13 +122,26 @@ project-root/
 
 ## Routes
 
-The application includes the following routes:
-
+### Basic Routes
 - **GET /** - Home page (landing page with project overview)
 - **GET /about** - About page (team information and project details)
 - **GET /contact** - Contact page (displays contact form)
 - **POST /contact** - Handles form submissions from the contact page
 - **404** - Error page for unknown routes
+
+### Assignment 2 Part 1 Routes
+- **GET /search?q=...** - Search page with query parameter
+  - Query parameter: `q` (required)
+  - Example: `/search?q=task`
+  - Returns 400 if query parameter is missing
+  
+- **GET /item/:id** - Item details page with route parameter
+  - Route parameter: `id` (required)
+  - Example: `/item/123` or `/item/task-001`
+  - Returns 400 if route parameter is missing
+  
+- **GET /api/info** - API endpoint returning project information in JSON format
+  - Returns JSON object with project details, team info, routes, and technologies
 
 ## Form Features
 
@@ -133,6 +161,24 @@ The contact form includes:
 - **CSS3** - Styling and layout
 - **JavaScript** - Client-side form validation
 - **File System (fs)** - For saving form data to JSON file
+
+## Features
+
+### Middleware
+- **express.static()** - Serves static files from public directory
+- **express.urlencoded()** - Parses form data from POST requests
+- **Custom Logger** - Logs HTTP method and URL for every request
+
+### Request Handling
+- **Query Parameters** - `/search?q=term` demonstrates `req.query`
+- **Route Parameters** - `/item/:id` demonstrates `req.params`
+- **Server-side Validation** - Returns HTTP 400 for missing required parameters
+- **JSON API Endpoint** - `/api/info` returns structured JSON data
+
+### Error Handling
+- Custom 400 error pages for validation failures
+- 404 page for unknown routes
+- Proper HTTP status codes
 
 ## Bonus Features Implemented
 

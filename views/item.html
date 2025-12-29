@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details - TaskManager</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>TaskManager</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="item-section">
+            <h1>Item Details</h1>
+            <p class="item-info">
+                This is a placeholder for item details functionality. In a real application, 
+                this page would display detailed information about a specific item.
+            </p>
+            
+            <div class="item-example">
+                <h2>How to use item route:</h2>
+                <p>Add an ID as a route parameter:</p>
+                <code class="code-block">/item/:id</code>
+                
+                <h3>Examples:</h3>
+                <ul class="example-list">
+                    <li><a href="/item/1">/item/1</a></li>
+                    <li><a href="/item/123">/item/123</a></li>
+                    <li><a href="/item/task-001">/item/task-001</a></li>
+                    <li><a href="/item/abc-def-ghi">/item/abc-def-ghi</a></li>
+                </ul>
+                
+                <div class="note-box">
+                    <p><strong>Note:</strong> This route demonstrates route parameters in Express.js. 
+                    The route parameter <code>id</code> is accessible via <code>req.params.id</code>.</p>
+                </div>
+            </div>
+            
+            <div class="route-info">
+                <h3>Technical Details:</h3>
+                <ul>
+                    <li><strong>Route:</strong> GET /item/:id</li>
+                    <li><strong>Route Parameter:</strong> id (required)</li>
+                    <li><strong>Validation:</strong> Returns 400 if 'id' is missing</li>
+                    <li><strong>Access:</strong> <code>req.params.id</code> in server.js</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TaskManager. Built with Node.js and Express.js</p>
+    </footer>
+
+    <script>
+        // Получаем ID из URL и отображаем его
+        const pathParts = window.location.pathname.split('/');
+        const itemId = pathParts[pathParts.length - 1];
+        
+        if (itemId) {
+            const itemInfo = document.querySelector('.item-info');
+            itemInfo.innerHTML = `
+                <strong>Item ID:</strong> <em>${itemId}</em>
+                <br><br>
+                This is a placeholder for item details functionality. In a real application, 
+                this page would display detailed information about item with ID "${itemId}".
+            `;
+        }
+    </script>
+</body>
+</html>
+
